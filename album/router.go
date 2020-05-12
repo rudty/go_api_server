@@ -17,7 +17,26 @@ func getAlbum(c *gin.Context) {
 	}
 }
 
-func Register(g *gin.RouterGroup) {
+func addAlbum(c *gin.Context) {
+	albumIDString := c.PostForm("album_id")
+	title := c.PostForm("title")
+	albumID, err := strconv.Atoi(albumIDString)
 
+	if err != nil {
+		panic(err)
+	}
+
+	album := Album{
+		AlbumID: albumID,
+		Title:   title,
+	}
+
+	InsertAlbum(&album)
+	c.JSON(200, dto.NewOKAPIResponse("OK"))
+}
+
+// Register 라우터 등록
+func Register(g *gin.RouterGroup) {
 	g.GET("/album/:album_id", getAlbum)
+	g.POST("/album", addAlbum)
 }

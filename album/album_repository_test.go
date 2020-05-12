@@ -23,3 +23,18 @@ func Test_FindById_NotExists(t *testing.T) {
 		t.Error("must nil")
 	}
 }
+
+func Test_InsertAlbum(t *testing.T) {
+	a := Album{}
+	a.AlbumID = 9999999
+	a.Title = "test"
+	InsertAlbum(&a)
+
+	g := FindAlbumByID(a.AlbumID)
+	if g.Title != a.Title {
+		t.Error("must title equal11")
+	}
+
+	var db *sqlx.DB = utils.GetDB()
+	db.Exec("delete from album where album_id = ?", a.AlbumID)
+}
