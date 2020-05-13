@@ -57,3 +57,17 @@ func Test_SaveAlbum(t *testing.T) {
 	var db *sqlx.DB = utils.GetDB()
 	db.Exec("delete from album where album_id = ?", a.AlbumID)
 }
+
+func Test_DeleteAlbum(t *testing.T) {
+	a := Album{}
+	a.AlbumID = 9999999
+	a.Title = "test_save"
+
+	SaveAlbum(&a)
+
+	DeleteAlbumByAlbumID(a.AlbumID)
+
+	if FindAlbumByID(a.AlbumID) != nil {
+		t.Error("album not deleted")
+	}
+}

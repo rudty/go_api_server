@@ -38,3 +38,9 @@ func SaveAlbum(a *Album) {
 			album_id = :album_id, 
 			title=:title;`, a)
 }
+
+// DeleteAlbumByAlbumID 앨범 아이디로 해당 앨범 1개를 삭제합니다
+func DeleteAlbumByAlbumID(albumID int) {
+	var db *sqlx.DB = utils.GetDB()
+	db.MustExec("delete from album where album_id=?;", albumID)
+}

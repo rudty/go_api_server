@@ -49,10 +49,19 @@ func modifyAlbum(c *gin.Context) {
 	SaveAlbum(album)
 }
 
+func deleteAlbum(c *gin.Context) {
+	albumIDString := c.Param("album_id")
+	albumID, err := strconv.Atoi(albumIDString)
+	if err != nil {
+		panic(err)
+	}
+	DeleteAlbumByAlbumID(albumID)
+}
+
 // Register 라우터 등록
 func Register(g *gin.RouterGroup) {
 	g.GET("/album/:album_id", getAlbum)
 	g.POST("/album", addAlbum)
 	g.PUT("/album/:album_id", modifyAlbum)
-
+	g.DELETE("/album/:album_id")
 }
