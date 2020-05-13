@@ -38,3 +38,22 @@ func Test_InsertAlbum(t *testing.T) {
 	var db *sqlx.DB = utils.GetDB()
 	db.Exec("delete from album where album_id = ?", a.AlbumID)
 }
+
+func Test_SaveAlbum(t *testing.T) {
+	a := Album{}
+	a.AlbumID = 9999999
+	a.Title = "test_save"
+
+	SaveAlbum(&a)
+
+	g := FindAlbumByID(a.AlbumID)
+	if g.Title != a.Title {
+		t.Error("must title equal")
+	}
+
+	a.Title = "test_save2"
+	SaveAlbum(&a)
+
+	var db *sqlx.DB = utils.GetDB()
+	db.Exec("delete from album where album_id = ?", a.AlbumID)
+}

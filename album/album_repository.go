@@ -26,3 +26,15 @@ func InsertAlbum(a *Album) {
 	var db *sqlx.DB = utils.GetDB()
 	db.MustExec("insert into album (album_id, title) values(?,?);", a.AlbumID, a.Title)
 }
+
+// SaveAlbum 앨범을 저장합니다(수정, 삭제)
+func SaveAlbum(a *Album) {
+	var db *sqlx.DB = utils.GetDB()
+	db.NamedExec(`
+		insert into album (album_id, title) 
+			values(:album_id,:title) 
+		on duplicate key 
+		update 
+			album_id = :album_id, 
+			title=:title;`, a)
+}
