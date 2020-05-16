@@ -49,7 +49,7 @@ func (c *connectionJSON) read() error {
 
 var db *sqlx.DB
 
-func init() {
+func databaseConnect() {
 	conn := connectionJSON{}
 	err := conn.read()
 	if err != nil {
@@ -96,4 +96,5 @@ func init() {
 	if flag.Lookup("test.v") != nil || strings.HasSuffix(os.Args[0], ".test") {
 		isTestRun = true
 	}
+	databaseConnect()
 }
