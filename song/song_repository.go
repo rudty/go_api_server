@@ -19,7 +19,13 @@ type Song struct {
 func FindSongByID(songID int) *Song {
 	var db *sqlx.DB = utils.GetDB()
 	s := Song{}
-	if err := db.Get(&s, "select * from song where idx=? limit 1;", songID); err != nil {
+	if err := db.Get(&s, `select 
+		song_id,
+		length,
+		title,
+		track,
+		album_id 
+	from song where idx=? limit 1;`, songID); err != nil {
 		panic(err)
 	}
 	return &s
