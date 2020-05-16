@@ -8,11 +8,11 @@ import (
 
 // Song 앨범에 들어가는 노래
 type Song struct {
-	SongID  int    `db:"idx"`
-	Length  int    `db:"length"`
-	Title   string `db:"title"`
-	Track   int    `db:"track"`
-	AlbumID int    `db:"album_id"`
+	SongID  int    `db:"idx" json:"song_id"`
+	Length  int    `db:"length" json:"length"`
+	Title   string `db:"title" json:"title"`
+	Track   int    `db:"track" json:"track"`
+	AlbumID int    `db:"album_id" json:"album_id"`
 }
 
 // FindSongByID ID 로 Song 을 가져옵니다

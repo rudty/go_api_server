@@ -8,8 +8,8 @@ import (
 
 // Album db 의 앨범 관련 정보
 type Album struct {
-	AlbumID int    `db:"album_id"`
-	Title   string `db:"title"`
+	AlbumID int    `db:"album_id" json:"album_id"`
+	Title   string `db:"title" json:"title"`
 }
 
 // FindAlbumByID 앨범 아이디로 앨범 1개를 가져옵니다.
