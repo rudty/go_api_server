@@ -2,16 +2,22 @@ package utils
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	// sql
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
+
+// go test 로 실행
+var isTestRun bool = false
 
 func getRootPath() string {
 	_, filename, _, _ := runtime.Caller(0)
@@ -61,10 +67,33 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if isTestRun {
+		d.SetMaxOpenConns(1)
+	}
 	db = d
 }
 
 //GetDB db 반환
 func GetDB() *sqlx.DB {
 	return db
+}
+
+// BeginTransactionForTest 테스트 환경일 때 sql begin transaction 을 실행함
+func BeginTransactionForTest() {
+	if isTestRun {
+		db.MustExec("start transaction;")
+	}
+}
+
+// RollbackTransactionForTest 테스트 환경일 때 rollback 을 실행함
+func RollbackTransactionForTest() {
+	if isTestRun {
+		db.MustExec("rollback;")
+	}
+}
+
+func init() {
+	if flag.Lookup("test.v") != nil || strings.HasSuffix(os.Args[0], ".test") {
+		isTestRun = true
+	}
 }
